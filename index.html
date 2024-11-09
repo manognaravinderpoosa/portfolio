@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manogna Ravinder | Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>Manogna Ravinder</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>I'm a passionate Computer Science student who loves to work on web development projects. I enjoy learning new technologies and building creative solutions.</p>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <h2>Projects</h2>
+            <div class="project-card">
+                <h3>Project 1: Portfolio Website</h3>
+                <p>A personal portfolio website built using HTML, CSS, and JavaScript to showcase my work and skills.</p>
+            </div>
+            <div class="project-card">
+                <h3>Project 2: E-Commerce Website</h3>
+                <p>A fully functional e-commerce site with user authentication, shopping cart, and payment integration.</p>
+            </div>
+            <div class="project-card">
+                <h3>Project 3: Blog Website</h3>
+                <p>A blog website with features like post creation, comment section, and a responsive design.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <h2>Contact Me</h2>
+            <form id="contact-form">
+                <input type="text" id="name" placeholder="Your name" required>
+                <input type="email" id="email" placeholder="Your email" required>
+                <textarea id="message" placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <!-- Confirmation Message -->
+            <div id="confirmation-message" style="display: none; color: green; margin-top: 20px;">
+                Message sent successfully!
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Get all the links in the navigation
+        const navLinks = document.querySelectorAll('nav a');
+        
+        // Add click event listeners to each link
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                
+                // Get the target section id
+                const targetId = link.getAttribute('href').substring(1); // Remove the '#' from href
+                const targetSection = document.getElementById(targetId);
+
+                // Hide all sections
+                document.querySelectorAll('.section').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Show the clicked section
+                targetSection.style.display = 'block';
+            });
+        });
+
+        // Initially, show the 'About' section when the page loads
+        document.getElementById('about').style.display = 'block';
+
+        // Contact form submission logic
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+        
+            // Get form values
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const message = document.getElementById('message').value.trim();
+        
+            // Validate form data (basic validation)
+            if (!name || !email || !message) {
+                alert('Please fill out all fields.');
+                return;
+            }
+        
+            // Send data to the backend using Fetch API
+            fetch('http://localhost:3000/send-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show confirmation message and hide the form
+                    document.getElementById('confirmation-message').style.display = 'block';
+                    document.getElementById('contact-form').style.display = 'none';
+                } else {
+                    alert('Failed to send message. Please try again later.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+  
+
+    
